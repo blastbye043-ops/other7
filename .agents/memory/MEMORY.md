@@ -8,3 +8,4 @@
 - [yt-dlp format ladder flakiness](ytdlp-format-ladder-flakiness.md) — from this server IP, YouTube inconsistently serves only 1 muxed format; retry multiple player_client combos and pick richest result.
 - [yt-dlp ffmpeg-location bug](ytdlp-ffmpeg-location-bug.md) — --ffmpeg-location needs a directory, not bare "ffmpeg"; passing a command name breaks ffprobe lookup and fails audio extraction silently.
 - [video-info perf: parallel + cache](video-info-perf.md) — race all yt-dlp client candidates in parallel (not sequential) and cache by video ID; cuts worst-case latency 4x and repeat lookups to ~ms.
+- [Vercel Root Directory = frontend/](vercel-root-directory.md) — all Vercel commands run from frontend/; use `cd .. && pnpm install`, `pnpm run build && cp -r dist _site`, outputDirectory `_site`; use process.cwd() not import.meta.dirname for outDir.
