@@ -14,10 +14,10 @@ const app: Express = express();
 // ─── Path helpers ────────────────────────────────────────────────────────────
 // In dev (tsx, __dirname = backend/src) and in production esbuild bundle
 // (backend/dist/index.mjs), ../../ resolves to the monorepo root.
-// The Vite build outputs to <repo-root>/public — Vercel's default output dir.
+// The Vite build outputs to frontend/dist (stays inside the package dir).
 // The backend references the same path for single-host self-serve setups.
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const frontendDist = path.join(__dirname, "..", "..", "public");
+const frontendDist = path.join(__dirname, "..", "..", "frontend", "dist");
 
 // ─── Trust proxy ─────────────────────────────────────────────────────────────
 // Required for express-rate-limit to read X-Forwarded-For correctly when

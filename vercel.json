@@ -1,6 +1,6 @@
 {
   "buildCommand": "pnpm --filter @workspace/ytdown run build",
-  "outputDirectory": "public",
+  "outputDirectory": "frontend/dist",
   "installCommand": "pnpm install",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }

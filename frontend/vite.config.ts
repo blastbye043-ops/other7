@@ -34,9 +34,9 @@ export default defineConfig(({ command }) => {
     },
     root: path.resolve(import.meta.dirname),
     build: {
-      // Output to <repo-root>/public — Vercel's default output directory.
-      // This avoids any ambiguity in vercel.json outputDirectory resolution.
-      outDir: path.resolve(repoRoot, "public"),
+      // Output to frontend/dist — stays inside the package directory so
+      // Vercel's build sandbox doesn't block the write (../traversal is blocked).
+      outDir: path.resolve(import.meta.dirname, "dist"),
       emptyOutDir: true,
       sourcemap: false,
       rollupOptions: {
