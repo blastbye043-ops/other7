@@ -3,9 +3,7 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 
-export default defineConfig(async ({ command }) => {
-  const isBuild = command === "build";
-
+export default defineConfig(({ command }) => {
   const rawPort = process.env.PORT;
   let port = 3000;
   if (rawPort) {
@@ -18,6 +16,9 @@ export default defineConfig(async ({ command }) => {
 
   const basePath = process.env.BASE_PATH ?? "/";
 
+  // Resolve the repo root (one level above frontend/)
+  const repoRoot = path.resolve(import.meta.dirname, "..");
+
   return {
     base: basePath,
     plugins: [
@@ -27,13 +28,15 @@ export default defineConfig(async ({ command }) => {
     resolve: {
       alias: {
         "@": path.resolve(import.meta.dirname, "src"),
-        "@assets": path.resolve(import.meta.dirname, "..", "attached_assets"),
+        "@assets": path.resolve(repoRoot, "attached_assets"),
       },
       dedupe: ["react", "react-dom"],
     },
     root: path.resolve(import.meta.dirname),
     build: {
-      outDir: path.resolve(import.meta.dirname, "dist/public"),
+      // Output to <repo-root>/public — Vercel's default output directory.
+      // This avoids any ambiguity in vercel.json outputDirectory resolution.
+      outDir: path.resolve(repoRoot, "public"),
       emptyOutDir: true,
       sourcemap: false,
       rollupOptions: {
