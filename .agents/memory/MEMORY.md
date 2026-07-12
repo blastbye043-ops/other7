@@ -1,0 +1,10 @@
+- [Monorepo restructure: Replit → standard layout](monorepo-restructure.md) — artifacts/ytdown→frontend, artifacts/api-server→backend, lib/*→packages/*; pnpm symlinks break on mv, always do clean reinstall after restructure.
+- [Replit Vite HMR fix](replit-vite-hmr-fix.md) — gate `hmr: { clientPort: 443 }` on `REPLIT_DOMAINS`; also run `pnpm install` on first import (node_modules absent).
+- [DB optional pattern](db-optional-pattern.md) — db/pool are nullable; fire-and-forget analytics with double try/catch; history routes return 503 when DB absent.
+- [yt-dlp on server IPs](ytdlp-server-ip-blocking.md) — YouTube blocks yt-dlp's default web client from datacenter IPs; force `player_client=android`.
+- [Split deploy: Vercel + Render](vercel-render-split-deploy.md) — static frontend on Vercel, Dockerized API on Render; why Docker is required and key gotchas.
+- [Backend serving frontend static files](backend-serves-frontend.md) — Express backend serves built React SPA; scriptSrcElem must NOT be set alongside scriptSrc (browsers prefer it, blocking inline scripts); SPA catch-all must skip /api paths to preserve API 404 semantics.
+- [Nix module install requires full env restart for PATH](nix-module-path-refresh.md) — after installing a module, workflow restart alone won't refresh PATH; use a shim script + env var pointing into /nix/store instead.
+- [yt-dlp format ladder flakiness](ytdlp-format-ladder-flakiness.md) — from this server IP, YouTube inconsistently serves only 1 muxed format; retry multiple player_client combos and pick richest result.
+- [yt-dlp ffmpeg-location bug](ytdlp-ffmpeg-location-bug.md) — --ffmpeg-location needs a directory, not bare "ffmpeg"; passing a command name breaks ffprobe lookup and fails audio extraction silently.
+- [video-info perf: parallel + cache](video-info-perf.md) — race all yt-dlp client candidates in parallel (not sequential) and cache by video ID; cuts worst-case latency 4x and repeat lookups to ~ms.

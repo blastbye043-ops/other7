@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Primary meta -->
+    <title>Download YouTube Videos Online | YTOUDown</title>
+    <meta name="description" content="YouTube Downloader YTOUDown: paste a link, choose MP4 or MP3, and download YouTube videos and Shorts fast — free, browser-based, no account needed." />
+    <meta name="keywords" content="YTOUDown, YTOUDown YouTube Downloader, download YouTube videos, free YouTube downloader, online video downloader, YouTube video download tool, download videos online, HD video downloader, browser video downloader, save YouTube videos, youtube to mp3, youtube to mp4, 4k youtube downloader" />
+    <meta name="author" content="YTOUDown" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+
+    <!-- Canonical (updated per-page via SEO component) -->
+    <link rel="canonical" href="https://ytoudown.com/" id="canonical-link" />
+
+    <!-- Theme -->
+    <meta name="theme-color" content="#e01f4f" />
+    <meta name="color-scheme" content="dark" />
+
+    <!-- Apple / iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="YTOUDown" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+    <!-- PWA manifest -->
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="YTOUDown" />
+    <meta property="og:url" content="https://ytoudown.com/" id="og-url" />
+    <meta property="og:title" content="Download YouTube Videos Online | YTOUDown" id="og-title" />
+    <meta property="og:description" content="YouTube Downloader YTOUDown: paste a link, choose MP4 or MP3, and download YouTube videos and Shorts fast — free, browser-based, no account needed." id="og-description" />
+    <meta property="og:image" content="https://ytoudown.com/opengraph.jpg" />
+    <meta property="og:image:secure_url" content="https://ytoudown.com/opengraph.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="YTOUDown — free YouTube video downloader interface" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Download YouTube Videos Online | YTOUDown" id="twitter-title" />
+    <meta name="twitter:description" content="YouTube Downloader YTOUDown: paste a link, choose MP4 or MP3, and download YouTube videos and Shorts fast — free, browser-based, no account needed." id="twitter-description" />
+    <meta name="twitter:image" content="https://ytoudown.com/twitter-card.jpg" />
+    <meta name="twitter:image:alt" content="YTOUDown — free YouTube video downloader interface" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" sizes="any" href="/favicon.ico" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    <!-- Anti-FOUC: instant background/foreground before the main CSS bundle
+         arrives. These two rules are the only ones truly needed for first
+         paint — everything else can wait for the full stylesheet. -->
+    <style>
+      :root { color-scheme: dark; }
+      html  { background-color: hsl(240 10% 4%); color: hsl(0 0% 98%);
+              font-family: "Inter Variable", Inter, system-ui, sans-serif; }
+    </style>
+
+    <!-- Fonts: Inter Variable is self-hosted (see index.css → @fontsource-variable/inter).
+         No cross-origin font request needed — the preconnects below are removed. -->
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         Google Consent Mode v2 — must run BEFORE any measurement scripts.
+         All consent types default to 'denied' until the user explicitly
+         accepts via the cookie banner. analytics_storage / ad_storage etc.
+         are updated by the React cookie consent hook after user interaction.
+         ═══════════════════════════════════════════════════════════════════ -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+
+      // Default: deny everything except security (required for GDPR compliance).
+      gtag('consent', 'default', {
+        ad_storage:             'denied',
+        ad_user_data:           'denied',
+        ad_personalization:     'denied',
+        analytics_storage:      'denied',
+        functionality_storage:  'denied',
+        personalization_storage:'denied',
+        security_storage:       'granted',
+        wait_for_update:         500
+      });
+
+      // Minimise data leakage while consent is pending.
+      gtag('set', 'ads_data_redaction', true);
+      gtag('set', 'url_passthrough',    true);
+    </script>
+
+    <!-- JSON-LD: BreadcrumbList (injected per-page by SEO component) -->
+    <script type="application/ld+json" id="jsonld-breadcrumb"></script>
+    <!-- JSON-LD: WebPage (injected per-page by SEO component — includes SpeakableSpecification) -->
+    <script type="application/ld+json" id="jsonld-webpage"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+
+    <!--
+      JSON-LD structured data is placed here at the end of <body> rather than
+      in <head>. Google supports both positions equally. Keeping them here lets
+      the HTML parser reach <div id="root"> and start the React bootstrap
+      without first processing ~5 KB of structured-data JSON.
+      (These are data scripts, not executable JS, so they are non-render-
+      blocking either way — this is a parser-hygiene / DevTools hygiene win.)
+    -->
+
+    <!-- JSON-LD: Organization -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://ytoudown.com/#organization",
+      "name": "YTOUDown",
+      "url": "https://ytoudown.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://ytoudown.com/logo.png",
+        "width": 512,
+        "height": 512
+      },
+      "description": "YTOUDown is a free YouTube video downloader powered by yt-dlp and FFmpeg. Download videos in 4K, 1080p, 720p, or as MP3 audio without an account.",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "privacy@ytoudown.com"
+      }
+    }
+    </script>
+
+    <!-- JSON-LD: WebSite with SearchAction -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://ytoudown.com/#website",
+      "name": "YTOUDown",
+      "url": "https://ytoudown.com",
+      "description": "Free YouTube video downloader. Download any public YouTube video in 4K, 1080p, 720p, or as MP3 audio instantly.",
+      "inLanguage": "en-US",
+      "publisher": { "@id": "https://ytoudown.com/#organization" },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://ytoudown.com/?url={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <!-- JSON-LD: SoftwareApplication -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "@id": "https://ytoudown.com/#app",
+      "name": "YTOUDown",
+      "url": "https://ytoudown.com",
+      "applicationCategory": "MultimediaApplication",
+      "applicationSubCategory": "Video Downloader",
+      "operatingSystem": "Any — works in any modern web browser",
+      "browserRequirements": "Requires a modern browser with JavaScript enabled",
+      "description": "YTOUDown is a free web application that downloads YouTube videos. Users paste a video URL, select from available formats (4K, 1080p, 720p, MP3, etc.), and download the file to their device. No account required.",
+      "featureList": [
+        "Download YouTube videos up to 4K resolution",
+        "Extract MP3 audio from YouTube videos",
+        "Supports MP4, WebM, M4A, and Opus formats",
+        "No account or registration required",
+        "Download history with stats",
+        "Server-side processing via yt-dlp and FFmpeg",
+        "Support for YouTube Shorts"
+      ],
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "isAccessibleForFree": true,
+      "provider": { "@id": "https://ytoudown.com/#organization" },
+      "softwareVersion": "1.0",
+      "softwareRequirements": "Internet connection",
+      "releaseNotes": "Initial release. Supports all public YouTube videos.",
+      "license": "For personal, educational, and archival use only."
+    }
+    </script>
+
+    <!-- JSON-LD: HowTo (download a YouTube video) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "How to Download a YouTube Video with YTOUDown",
+      "description": "Step-by-step guide to downloading a YouTube video using YTOUDown — a free, no-account web tool.",
+      "totalTime": "PT2M",
+      "estimatedCost": { "@type": "MonetaryAmount", "currency": "USD", "value": "0" },
+      "tool": [
+        { "@type": "HowToTool", "name": "Web browser" },
+        { "@type": "HowToTool", "name": "YTOUDown (https://ytoudown.com)" }
+      ],
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Copy the YouTube URL",
+          "text": "Open YouTube, find the video you want to download, and copy the full URL from your browser's address bar (e.g. https://www.youtube.com/watch?v=XXXXXXXXXXX).",
+          "url": "https://ytoudown.com/#step-1"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Paste the URL into YTOUDown",
+          "text": "Go to https://ytoudown.com, click the input field, and paste the YouTube URL.",
+          "url": "https://ytoudown.com/#step-2"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Click Get Info",
+          "text": "Click the 'Get Info' button. YTOUDown fetches the video title, thumbnail, and all available download formats.",
+          "url": "https://ytoudown.com/#step-3"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Select a quality",
+          "text": "Choose your preferred format from the list — for example 1080p MP4 for HD video, or M4A for audio only.",
+          "url": "https://ytoudown.com/#step-4"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 5,
+          "name": "Download the file",
+          "text": "Click 'Download'. The server processes the file using yt-dlp and FFmpeg. When ready, click the download link to save the file to your device.",
+          "url": "https://ytoudown.com/#step-5"
+        }
+      ]
+    }
+    </script>
+
+    <!-- JSON-LD: WebApplication — explicit tool categorisation for Generative AI engines -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "@id": "https://ytoudown.com/#webapplication",
+      "name": "YTOUDown",
+      "url": "https://ytoudown.com",
+      "applicationCategory": "MultimediaApplication",
+      "applicationSubCategory": "Video Downloader",
+      "operatingSystem": "All — runs in any modern web browser",
+      "browserRequirements": "Requires JavaScript and a stable internet connection",
+      "description": "YTOUDown is a free, browser-based YouTube video downloader. Paste a YouTube URL, choose a quality (up to 4K MP4 or MP3 audio), and download — no software or account required. Powered by yt-dlp and FFmpeg.",
+      "featureList": [
+        "Download YouTube videos up to 4K resolution",
+        "Extract MP3 and M4A audio from YouTube videos",
+        "Supports MP4, WebM, M4A, and Opus formats",
+        "YouTube Shorts support",
+        "No account or registration required",
+        "Entirely browser-based — no software installation"
+      ],
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      },
+      "isAccessibleForFree": true,
+      "provider": { "@id": "https://ytoudown.com/#organization" }
+    }
+    </script>
+
+    <!-- JSON-LD: FAQPage — top conversational Q&As for AI answer engines -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do I download a YouTube video for free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Copy the YouTube video URL, paste it into YTOUDown, click 'Get Info', select your preferred quality from the list, and click 'Download'. The service is completely free and requires no account or software installation."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How can I download YouTube videos without software?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "YTOUDown is entirely browser-based — no software, no browser extension, and no desktop app required. Simply visit ytoudown.com, paste a YouTube URL, and download directly in your browser."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is YTOUDown free to use?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. YTOUDown is completely free. There are no subscriptions, no premium tiers, and no account required. You can download videos without signing up or providing any personal information."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I download YouTube videos as MP3 audio?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. After clicking 'Get Info', select an audio-only format (M4A, Opus, or MP3) from the format list and click 'Download'. YTOUDown uses FFmpeg to extract and encode the audio track."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What video qualities are available for download?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "YTOUDown shows all formats available for a given video, which can include 4K (2160p), 1440p, 1080p, 720p, 480p, and audio-only options. The exact list depends on what the uploader originally provided."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does YTOUDown support YouTube Shorts?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. YouTube Shorts use standard YouTube URLs (youtube.com/shorts/VIDEO_ID) and are fully supported. Paste the Shorts URL the same way as any other YouTube video."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does YTOUDown work on mobile devices?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. YTOUDown is fully responsive and works on Android phones, iPhones, iPads, and tablets. The interface adapts to your screen size automatically."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is downloading YouTube videos legal?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Downloading YouTube videos may conflict with YouTube's Terms of Service except where a download option is explicitly provided. Legality also depends on copyright law in your country. YTOUDown is intended for personal, educational, and archival use with content you have the legal right to download."
+          }
+        }
+      ]
+    }
+    </script>
+
+    <!-- JSON-LD: BreadcrumbList (injected per-page by SEO component) -->
+    <script type="application/ld+json" id="jsonld-breadcrumb"></script>
+    <!-- JSON-LD: WebPage (injected per-page by SEO component — includes SpeakableSpecification) -->
+    <script type="application/ld+json" id="jsonld-webpage"></script>
+  </body>
+</html>

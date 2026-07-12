@@ -1,0 +1,30 @@
+# Build context is the monorepo root — strip everything the API server
+# doesn't need to keep the Docker build context small.
+
+**/node_modules
+**/dist
+**/.tsbuildinfo
+**/.turbo
+
+# Frontend is not needed to build the API server
+frontend
+
+# Replit/local tooling
+.agents
+.local
+.replit
+replit.nix
+replit.md
+attached_assets
+screenshots
+zipFile.zip
+
+# VCS and editor
+.git
+.gitignore
+.vscode
+
+# Secrets — never bake into image
+.env
+.env.*
+*.log

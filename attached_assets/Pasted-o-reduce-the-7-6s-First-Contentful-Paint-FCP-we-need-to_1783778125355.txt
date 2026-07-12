@@ -1,0 +1,34 @@
+o reduce the 7.6s First Contentful Paint (FCP), we need to address the "Waterfall Effect" caused by the current loading strategy. The 7.6s delay is primarily driven by three factors: a massive synchronous CSS file, a chain of Vite module loads, and a heavy external script (replit-pill.global.js).
+
+1. Optimize the "CSS Critical Path"
+Currently, index.css is 181 KB and is requested at 1.2s but takes over 3 seconds to download and process. Because it is a standard stylesheet link, it is render-blocking.
+
+Solution: Extract the CSS for the hero section (the h1 and article you're inspecting) and place it in a <style> tag in the <head>.
+Action: Move the remaining 180KB of Tailwind CSS to a deferred load or use a plugin like critters to automate this in your build step.
+2. Solve the "Module Loading Waterfall"
+The network log shows a deep dependency chain. main.tsx loads App.tsx, which loads layout.tsx, which loads button.tsx, and so on. Each "hop" adds latency.
+
+Solution: Use Route-based Code Splitting. Since this is a React app, wrap your main components in React.lazy() and Suspense.
+Action: In App.tsx, lazy load any components that aren't immediately visible (like the Cookie Consent or the "How to download" section).
+3. Defer Non-Critical Scripts
+The script replit-pill.global.js takes 3.5 seconds to process. If this is a decorative element or a development tool, it is stealing CPU time from the initial render.
+
+Solution: Add the defer attribute to this script if it isn't already there, or move it to the end of the <body>.
+Action: Ensure all non-essential scripts (analytics, ads, consent banners) are loaded with async or defer.
+4. Optimize Font Loading
+You are loading "Inter" from Google Fonts. While you have a preconnect, the browser still waits for the CSS from fonts.googleapis.com before it knows which font files to download.
+
+Solution: Self-host the Inter font files or use font-display: swap;.
+Action: In your @font-face or Google Fonts URL, ensure &display=swap is present (it currently is, but self-hosting would save ~200ms of DNS/TLS handshake).
+5. Shift from Development to Production Build
+The presence of @vite/client and main.tsx?t=... suggests you are viewing a development server version of the site.
+
+Observation: Vite's dev server is intentionally unoptimized for speed (it serves modules individually).
+Action: Run a production build (npm run build). This will bundle those dozens of small .ts requests into 1-2 optimized chunks, which should automatically drop your FCP by 4-5 seconds.
+
+
+
+
+
+Copy to coding agent
+Can you show me how to implement React.l

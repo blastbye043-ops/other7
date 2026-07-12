@@ -1,0 +1,238 @@
+Improve the advertisement system and cookie consent banner on the YTOUDown website without changing the existing UI, branding, functionality, SEO, AEO, GEO, or responsiveness.
+
+==================================================
+PART 1 - ADVERTISEMENT MANAGEMENT
+==================================================
+
+The website uses Google AdSense.
+
+Improve the advertisement experience while following Google AdSense policies.
+
+Requirements:
+
+• Build a reusable Ad Component.
+
+• Lazy load advertisements only when they enter the viewport.
+
+• Keep reserved space for every ad to prevent layout shifts (CLS).
+
+• Optimize advertisements for desktop, tablet and mobile.
+
+• Hide advertisements when no ad is returned.
+
+• Ensure advertisements remain responsive.
+
+==================================================
+ADVERTISEMENT REFRESH
+==================================================
+
+Do NOT implement any refresh behavior that violates Google AdSense policies.
+
+Instead:
+
+• Create an ad refresh manager that refreshes only where appropriate and policy-compliant.
+
+• Only refresh ads when:
+  - The user has been active on the page.
+  - The ad slot is visible.
+  - The refresh interval has elapsed.
+  - Refresh behavior complies with Google AdSense requirements.
+
+• Never refresh hidden ads.
+
+• Never refresh ads while the tab is inactive.
+
+• Pause refresh when the browser tab loses focus.
+
+• Resume refresh when the tab becomes active again.
+
+• Use IntersectionObserver for visibility detection.
+
+• Prevent duplicate ad requests.
+
+• Destroy previous ad instances before requesting a new one if required.
+
+• Avoid unnecessary network requests.
+
+• Do not refresh every advertisement simultaneously.
+
+• Randomize refresh timing slightly to reduce simultaneous requests.
+
+==================================================
+PERFORMANCE
+==================================================
+
+Keep:
+
+Lighthouse Performance above 90.
+
+No layout shifts.
+
+Fast page loading.
+
+No console errors.
+
+==================================================
+PART 2 - COOKIE CONSENT BANNER
+==================================================
+
+The cookie banner currently blends into the website background and is difficult to notice.
+
+Redesign it while keeping the existing theme.
+
+Requirements:
+
+• Make the cookie banner clearly visible.
+
+Recommended colors:
+
+Background:
+#FFFFFF (White)
+
+OR
+
+#F3F4F6 (Light Grey)
+
+Text:
+#111827
+
+Border:
+#D1D5DB
+
+Shadow:
+Soft modern shadow.
+
+Rounded corners:
+12–16px.
+
+==================================================
+LAYOUT
+==================================================
+
+Desktop:
+
+Floating card at the bottom.
+
+Centered horizontally.
+
+Maximum width:
+700–850px.
+
+Tablet:
+
+95% width.
+
+Mobile:
+
+95% width.
+
+Stack buttons vertically.
+
+==================================================
+BUTTONS
+==================================================
+
+Primary:
+
+Accept All
+
+Background:
+#2563EB
+
+Text:
+White
+
+Secondary:
+
+Reject Non-Essential
+
+White background with grey border.
+
+Third:
+
+Cookie Settings
+
+Grey background.
+
+Hover animations.
+
+Accessible focus states.
+
+==================================================
+ANIMATION
+==================================================
+
+Fade in.
+
+Slide up.
+
+Duration:
+250–350ms.
+
+Dismiss smoothly.
+
+==================================================
+Z-INDEX
+==================================================
+
+Ensure the cookie banner always appears above:
+
+Hero section
+
+Sidebar advertisements
+
+Sticky navigation
+
+Footer
+
+Popups
+
+Dropdowns
+
+Recommended:
+
+z-index: 9999
+
+==================================================
+ACCESSIBILITY
+==================================================
+
+Support:
+
+Keyboard navigation
+
+ARIA labels
+
+Screen readers
+
+Visible focus indicators
+
+Large touch targets
+
+==================================================
+RESPONSIVE
+==================================================
+
+Ensure the banner is fully responsive.
+
+Never overflow.
+
+Never hide behind page content.
+
+Never overlap the navigation.
+
+==================================================
+IMPORTANT
+==================================================
+
+Do not change existing functionality.
+
+Do not redesign the website.
+
+Do not change branding.
+
+Do not reduce performance.
+
+Keep everything Google AdSense compatible.
+
+Keep the implementation GDPR and Google Consent Mode v2 compatible.

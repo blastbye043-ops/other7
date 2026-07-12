@@ -1,0 +1,49 @@
+Optimize the YTOUDown application for production performance without changing the UI or functionality.
+
+Requirements:
+
+1. Split the application into lazy-loaded sections.
+   - Keep the downloader hero, input, and video results in the main bundle.
+   - Lazy-load FAQ, Benefits, Compatible Devices, Footer, Privacy Policy, and Competitor Comparison.
+
+2. Reduce unnecessary React re-renders.
+   - Memoize expensive components.
+   - Memoize large lists.
+   - Avoid recreating objects and arrays during every render.
+   - Use React.memo, useMemo, and useCallback where appropriate.
+
+3. Improve video information loading.
+   - Show the thumbnail, title, and duration immediately after metadata is available.
+   - Load format information immediately afterward if necessary.
+   - Never block the UI while formats are loading.
+
+4. Implement metadata caching.
+   - Cache successful video metadata requests in memory for 10–30 minutes.
+   - Reuse cached metadata for repeated requests to the same URL.
+
+5. Improve bundle size.
+   - Remove unused imports.
+   - Remove unused dependencies.
+   - Enable tree shaking.
+   - Use dynamic imports where appropriate.
+
+6. Optimize images.
+   - Lazy-load below-the-fold images.
+   - Use WebP where possible.
+   - Preload only the hero assets.
+
+7. Optimize layouts.
+   - Avoid unnecessary layout recalculations.
+   - Minimize DOM updates.
+   - Batch state updates where possible.
+
+8. Improve loading UX.
+   - Display skeleton placeholders while fetching video info.
+   - Disable duplicate requests.
+   - Show meaningful loading states.
+
+9. Keep all existing SEO, AEO, GEO, Google Adsense, responsiveness, and downloader functionality intact.
+
+10. Ensure the application builds efficiently with Vite in production and minimize the number of JavaScript chunks without creating an excessively large bundle.
+
+The goal is to reduce initial page load time, improve Largest Contentful Paint (LCP), minimize JavaScript execution time, and make video information appear as quickly as possible.

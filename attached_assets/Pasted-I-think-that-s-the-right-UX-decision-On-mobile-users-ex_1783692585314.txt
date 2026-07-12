@@ -1,0 +1,73 @@
+I think that's the right UX decision. On mobile, users expect the video preview to appear immediately after they tap **Get Video** (or after pasting the URL). If the trust badges remain above the results, many users won't realize the video information has loaded and may think the request failed.
+
+Here's a copy-paste prompt for your AI:
+
+```text
+Improve the mobile UX for the YTOUDown homepage without changing the desktop layout.
+
+Current issue:
+On mobile devices, after the user pastes a YouTube URL and the video information loads, the "Fast Processing", "No Registration Required", and "Works on Desktop & Mobile" trust badges remain above the video information. Because of this, the user has to scroll down to discover that the video information has already loaded, making it seem like nothing happened.
+
+Required behavior:
+
+• Desktop (>=1024px):
+  - Keep the current layout exactly as it is.
+  - Do not change the position of the trust badges.
+
+• Tablet & Mobile (<1024px):
+  - When there is NO video loaded:
+      Input
+      Get Video button
+      Trust badges
+      Advertisement (if enabled)
+      Rest of homepage
+
+  - When video information IS loaded:
+      Input
+      Get Video button
+      Video Information Card (thumbnail, title, duration, formats, download options)
+      Trust badges
+      Advertisement
+      Remaining homepage sections
+
+This means the video information should automatically appear ABOVE the trust badges on mobile only.
+
+Additional improvements:
+
+• After the video information is successfully loaded:
+  - Smoothly scroll the page to the top of the video information card.
+  - Use smooth scrolling behavior.
+  - Leave about 10–20px of spacing above the card.
+  - Do not jump abruptly.
+
+• Animate the video card into view using a subtle fade + slide-up animation (200–300ms).
+
+• Keep the trust badges visible below the video card.
+
+• Do NOT duplicate the trust badges.
+
+• Do NOT change desktop behavior.
+
+• Do NOT modify colors or styling.
+
+• Preserve all existing functionality.
+
+Expected mobile order after loading:
+
+1. URL input
+2. Get Video button
+3. Video information card
+4. Fast Processing
+5. No Registration Required
+6. Works on Desktop & Mobile
+7. Advertisement
+8. Remaining homepage content
+
+Also ensure that whenever a new URL is pasted or a different video is loaded, the page again smoothly scrolls to the newly loaded video information automatically.
+```
+
+This approach is much better than simply moving the badges permanently because:
+
+* Before loading a video, the trust badges reassure first-time visitors.
+* After loading, the video preview becomes the primary focus, so users immediately know their request succeeded.
+* It reduces confusion and unnecessary scrolling, especially on smaller screens.

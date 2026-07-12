@@ -1,0 +1,309 @@
+Perform a complete audit and repair of the entire YTOUDown application without changing the UI, branding, SEO, AEO, GEO, responsiveness, colors, or user experience.
+
+The website currently has several critical functional issues that must all be fixed.
+
+==================================================
+CRITICAL ISSUES
+==================================================
+
+1. Sometimes the preview page is completely blank.
+
+2. Sometimes the frontend crashes silently.
+
+3. "Failed to fetch/download video info" appears frequently.
+
+4. Sometimes pressing Download does nothing.
+
+5. Sometimes the available formats are not displayed.
+
+6. The application behaves differently on different machines.
+
+7. The project should work locally without depending on Replit.
+
+==================================================
+FRONTEND
+==================================================
+
+Audit the entire React application.
+
+Fix:
+
+• Blank white screen
+• Runtime crashes
+• Hydration errors
+• React rendering errors
+• Missing providers
+• Broken routes
+• Infinite re-renders
+• Unhandled Promise rejections
+• Broken Suspense boundaries
+
+Create a global Error Boundary.
+
+Display a friendly error page instead of a blank screen.
+
+==================================================
+BACKEND
+==================================================
+
+Audit every API endpoint.
+
+Verify:
+
+Video Info API
+
+Download API
+
+Health API
+
+Format API
+
+Thumbnail API
+
+Return meaningful JSON errors.
+
+Never return generic:
+
+"Failed to fetch video info"
+
+Instead return the real cause.
+
+Examples:
+
+Invalid URL
+
+Video unavailable
+
+Age restricted
+
+Region blocked
+
+Cookies required
+
+yt-dlp missing
+
+ffmpeg missing
+
+Backend offline
+
+Timeout
+
+Network error
+
+==================================================
+VIDEO INFORMATION
+==================================================
+
+When a user pastes a supported URL:
+
+Immediately fetch video information automatically.
+
+No "Get Video" button should be required.
+
+Display:
+
+Thumbnail
+
+Title
+
+Duration
+
+Channel
+
+View count
+
+Available formats
+
+==================================================
+DOWNLOAD FORMATS
+==================================================
+
+Replace the current format list with a professional dropdown.
+
+Organize formats by type.
+
+Example:
+
+──────── MP4 ────────
+
+2160p
+
+1440p
+
+1080p
+
+720p
+
+480p
+
+360p
+
+──────── WEBM ────────
+
+2160p
+
+1080p
+
+720p
+
+──────── AUDIO ────────
+
+MP3 320 kbps
+
+MP3 256 kbps
+
+MP3 192 kbps
+
+M4A
+
+AAC
+
+Sort every group from highest quality to lowest.
+
+Display:
+
+Resolution
+
+Extension
+
+File size
+
+Video codec
+
+Audio codec
+
+==================================================
+DOWNLOAD
+==================================================
+
+When Download is pressed:
+
+Disable the button.
+
+Show loading animation.
+
+Prevent duplicate clicks.
+
+Show download progress whenever available.
+
+Automatically re-enable button if download fails.
+
+Display proper error messages.
+
+==================================================
+URL HANDLING
+==================================================
+
+Support:
+
+youtube.com
+
+youtu.be
+
+youtube shorts
+
+youtube music
+
+playlist detection
+
+Reject unsupported URLs gracefully.
+
+==================================================
+LOCAL DEVELOPMENT
+==================================================
+
+The project must work after:
+
+git clone
+
+pnpm install
+
+pnpm setup
+
+pnpm dev
+
+without depending on Replit.
+
+Automatically detect missing dependencies.
+
+==================================================
+ERROR LOGGING
+==================================================
+
+Improve logging.
+
+Frontend:
+
+Console warnings
+
+API failures
+
+Rendering failures
+
+Backend:
+
+yt-dlp output
+
+ffmpeg output
+
+API exceptions
+
+Unhandled exceptions
+
+==================================================
+RECOVERY
+==================================================
+
+If fetching video information fails:
+
+Allow retry.
+
+Do not require refreshing the page.
+
+==================================================
+PERFORMANCE
+==================================================
+
+Prevent duplicate API requests.
+
+Cancel previous request when user pastes another URL.
+
+Debounce input.
+
+Cache successful responses.
+
+==================================================
+QUALITY ASSURANCE
+==================================================
+
+Test the following:
+
+Desktop Chrome
+
+Desktop Edge
+
+Firefox
+
+Safari
+
+Android Chrome
+
+iPhone Safari
+
+==================================================
+FINAL RESULT
+==================================================
+
+The application should behave consistently on every machine.
+
+The homepage should never become blank.
+
+Video information should always load when a valid URL is pasted.
+
+Download formats should always appear in a categorized dropdown.
+
+Downloads should work reliably.
+
+Every failure should provide a meaningful error instead of a generic message.
+
+No part of the application should depend on Replit-specific functionality.

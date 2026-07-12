@@ -1,0 +1,19 @@
+{
+  "name": "ytoudown",
+  "version": "0.0.0",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm run dev:backend & pnpm run dev:frontend",
+    "dev:frontend": "pnpm --filter @workspace/ytdown run dev",
+    "dev:backend": "pnpm --filter @workspace/api-server run dev",
+    "setup": "bash scripts/setup.sh",
+    "build": "pnpm run typecheck && pnpm -r --if-present run build",
+    "typecheck:libs": "tsc --build",
+    "typecheck": "pnpm run typecheck:libs && pnpm -r --filter ./frontend --filter ./backend --if-present run typecheck"
+  },
+  "devDependencies": {
+    "prettier": "^3.8.4",
+    "typescript": "~5.9.3"
+  }
+}

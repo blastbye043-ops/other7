@@ -1,0 +1,82 @@
+# YTOUDown — YouTube Video Downloader
+
+> YTOUDown is a free, web-based YouTube video downloader. Paste a YouTube URL to download videos in 4K, 1080p, 720p, 480p, or as MP3/M4A audio. No account required. No ads.
+
+## What YTOUDown Does
+
+YTOUDown lets users download YouTube videos directly from their browser. Users paste a YouTube URL, the server fetches available formats via yt-dlp, the user selects a quality, and the server processes and serves the file for download.
+
+Supported output formats: MP4 (H.264, VP9, AV1), WebM, M4A, MP3, Opus.
+Supported resolutions: 144p, 240p, 360p, 480p, 720p, 1080p, 1440p, 4K (when available on the source video).
+
+## Key Facts
+
+- Free to use. No registration required.
+- Powered by yt-dlp (open-source video downloader) and FFmpeg (media processing).
+- Backend: Node.js + Express. Frontend: React + Vite + Tailwind CSS.
+- Database: PostgreSQL (stores download history only).
+- Downloads are server-side processed and temporarily stored; files expire after 1 hour.
+- No advertising. No third-party tracking cookies.
+- Download history is stored per-server (not tied to user accounts).
+
+## Pages
+
+- / — Home (downloader interface): paste URL, select format, download
+- /history — Download history: view past downloads with stats
+- /formats — Supported formats: full list of video/audio formats YTOUDown can produce
+- /faq — FAQ: answers to 20 common questions about downloading YouTube videos
+- /about — About: description of how YTOUDown works, technology used, and legal notice
+- /privacy — Privacy Policy: what data is collected and how it is used
+- /terms — Terms of Service: permitted and prohibited uses
+
+## How to Download a YouTube Video with YTOUDown
+
+1. Copy the YouTube video URL from your browser address bar.
+2. Go to https://ytoudown.com
+3. Paste the URL into the input field.
+4. Click "Get Info" — the server fetches available formats.
+5. Select a quality (e.g. 1080p MP4, or MP3 audio).
+6. Click "Download" — the server processes the file.
+7. When ready, click the download link to save the file.
+
+## Frequently Asked Questions (Short Answers)
+
+Q: Is YTOUDown free?
+A: Yes. YTOUDown is completely free to use with no account required.
+
+Q: What formats can I download?
+A: MP4, WebM, M4A, MP3, Opus. Resolutions up to 4K depending on the source video.
+
+Q: Can I download MP3 audio only?
+A: Yes. Select an audio-only format (M4A or Opus) from the format list.
+
+Q: How long does a download take?
+A: Typically 30–90 seconds depending on video length and quality.
+
+Q: Does YTOUDown support YouTube Shorts?
+A: Yes. YouTube Shorts use standard YouTube URLs and are supported.
+
+Q: Do I need to create an account?
+A: No. YTOUDown works without any registration or login.
+
+Q: Is downloading YouTube videos legal?
+A: Downloading may violate YouTube's Terms of Service. YTOUDown is intended for personal, educational, and archival use with content you have rights to download.
+
+Q: What technology powers YTOUDown?
+A: yt-dlp (video extraction), FFmpeg (media processing), Node.js/Express (API), React/Vite (frontend), PostgreSQL (history).
+
+## Technology
+
+- yt-dlp: https://github.com/yt-dlp/yt-dlp
+- FFmpeg: https://ffmpeg.org
+- Node.js: https://nodejs.org
+- React: https://react.dev
+
+## Legal
+
+YTOUDown is provided for personal, educational, and archival use only. Users are responsible for ensuring they have the right to download any content. See /terms and /privacy for full details.
+
+## Contact
+
+- Privacy: privacy@ytoudown.com
+- Legal / DMCA: legal@ytoudown.com

@@ -1,0 +1,263 @@
+Refactor the YTOUDown application so that downloading videos is completely independent of the database.
+
+==================================================
+PRIMARY GOAL
+==================================================
+
+The website should NEVER require a database to:
+
+• Fetch video information
+• Display thumbnail
+• Display title
+• Display duration
+• Display uploader
+• Display available formats
+• Generate download links
+• Download videos
+• Convert videos to MP3
+• Process YouTube Shorts
+• Process playlists (if supported)
+
+The core downloader must work even if the database is offline or completely removed.
+
+==================================================
+REMOVE DATABASE FROM DOWNLOAD PIPELINE
+==================================================
+
+Audit the entire backend.
+
+Find every database query related to:
+
+Downloads
+
+Video info
+
+History
+
+Analytics
+
+Logs
+
+Statistics
+
+Caching
+
+Favorites
+
+Saved downloads
+
+Recent downloads
+
+Remove those queries from the critical request path.
+
+The workflow should become:
+
+User pastes URL
+
+↓
+
+Validate URL
+
+↓
+
+Fetch metadata using yt-dlp
+
+↓
+
+Return thumbnail
+
+↓
+
+Return title
+
+↓
+
+Return duration
+
+↓
+
+Return available formats
+
+↓
+
+User selects a format
+
+↓
+
+Download begins
+
+No database interaction should occur anywhere in this flow.
+
+==================================================
+DATABASE SHOULD NEVER BLOCK DOWNLOADS
+==================================================
+
+If the project still includes a database for analytics or future features:
+
+Database writes must happen asynchronously.
+
+Wrap every database operation inside try/catch.
+
+If a database query fails:
+
+Log the error.
+
+Do NOT throw an exception.
+
+Do NOT return HTTP 500.
+
+Do NOT interrupt the user.
+
+Continue downloading normally.
+
+==================================================
+REMOVE UNNECESSARY DATABASE TABLES
+==================================================
+
+If the following tables are used only for logging:
+
+downloads
+
+download_history
+
+analytics
+
+recent_downloads
+
+video_cache
+
+Remove their usage from the downloader.
+
+Delete unused models and services if they are no longer needed.
+
+==================================================
+REPLACE DATABASE CACHE
+==================================================
+
+Instead of saving video information in the database:
+
+Use an in-memory cache.
+
+Cache by:
+
+Video ID
+
+Cache duration:
+
+10–15 minutes
+
+If the same video is requested again:
+
+Return cached metadata immediately.
+
+Do not call yt-dlp again until the cache expires.
+
+==================================================
+ERROR HANDLING
+==================================================
+
+Never return:
+
+HTTP 500
+
+because a database query failed.
+
+Only return an error when:
+
+The YouTube URL is invalid.
+
+The video is unavailable.
+
+The video is private.
+
+The network fails.
+
+yt-dlp fails.
+
+FFmpeg fails.
+
+==================================================
+DOWNLOAD PIPELINE
+==================================================
+
+New flow:
+
+Paste URL
+
+↓
+
+Validate URL
+
+↓
+
+Extract metadata with yt-dlp
+
+↓
+
+Return metadata
+
+↓
+
+Display formats
+
+↓
+
+Select format
+
+↓
+
+Download
+
+No SQL query.
+
+No database insert.
+
+No history insert.
+
+No analytics insert.
+
+==================================================
+PERFORMANCE
+==================================================
+
+Removing the database should reduce latency.
+
+Optimize every endpoint.
+
+Prevent duplicate yt-dlp executions.
+
+Prevent duplicate API requests.
+
+Use request caching.
+
+Cancel previous requests when a new URL is pasted.
+
+==================================================
+OPTIONAL ANALYTICS
+==================================================
+
+If analytics are still required:
+
+Perform them completely in the background.
+
+Never wait for analytics before returning a response.
+
+Never fail a download because analytics failed.
+
+==================================================
+FINAL REQUIREMENTS
+==================================================
+
+The application should work correctly when:
+
+The database is offline.
+
+The database credentials are removed.
+
+The database server is unreachable.
+
+The database package is uninstalled.
+
+The downloader must continue to work normally.
+
+The project should be production-ready, lightweight, and completely independent of the database for all download-related functionality while preserving the existing UI, responsiveness, SEO, AEO, GEO optimization, and user experience.

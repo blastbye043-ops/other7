@@ -1,0 +1,25 @@
+To optimize the /api/video/info endpoint logic, which is currently taking ~15.7 seconds, you should focus on server-side performance and efficient data handling. Since I am an assistant inspecting the client-side, I can provide the architectural optimizations needed to fix this bottleneck:
+
+1. Implement Server-Side Caching (Recommended)
+The most significant speed boost will come from not fetching the same video info repeatedly.
+
+Strategy: Use a cache (like Redis or an in-memory Map for small apps) to store video metadata for a specific URL for 1–2 hours.
+Result: Subsequent requests for popular videos will drop from 15s to <50ms.
+2. Optimize Metadata Fetching
+The 15-second delay suggests your server is likely downloading the entire video page or using a slow library (like a full headless browser) to parse the data.
+
+Switch to Lightweight Libraries: If you are using a headless browser (Puppeteer/Playwright) to get info, switch to lightweight HTTP-based libraries like ytdl-core, yt-dlp (via child process), or direct API calls to YouTube's Data API v3.
+Filter Fields: Only request the specific metadata you need (title, thumbnail, formats) rather than the entire object.
+3. Asynchronous/Streaming Response
+If the delay is caused by processing multiple formats or resolutions:
+
+Partial Returns: Return the basic info (Title & Thumbnail) immediately and then use a separate request or a WebSocket/Server-Sent Events to stream the available download formats as they are processed.
+Client-Side Impact: This would allow uid=851 (the card) to show the thumbnail immediately, even if uid=852 (the download options) is still loading.
+4. Parallelize Back-end Tasks
+If your server is doing multiple steps (e.g., fetching info, then checking file sizes for every format):
+
+Use Promise.all: Ensure all non-dependent tasks (like fetching high-res thumbnails and checking video availability) are running in parallel.
+5. Production Environment Tuning
+The site currently appears to be running in a development environment (@vite/client is active).
+
+Cold Starts: If your API is hosted on a platform like Replit or Vercel (Hobby), the 15s could include a "cold start." Ensure your server stays warm or use a provider with lower latency for compute-heavy tasks.

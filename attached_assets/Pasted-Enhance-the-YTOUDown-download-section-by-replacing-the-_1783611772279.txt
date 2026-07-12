@@ -1,0 +1,281 @@
+Enhance the YTOUDown download section by replacing the current single MP4 download option with a professional, responsive dropdown that automatically displays every available format returned by yt-dlp.
+
+==================================================
+GOAL
+==================================================
+
+The user should be able to choose from multiple download formats in an organized dropdown before downloading.
+
+Do NOT change the existing UI, branding, colors, SEO, responsiveness, or functionality.
+
+==================================================
+SUPPORTED FORMATS
+==================================================
+
+The backend should retrieve every available format from yt-dlp.
+
+Display formats such as:
+
+──────── VIDEO (MP4) ────────
+
+2160p (4K)
+
+1440p (2K)
+
+1080p Full HD
+
+720p HD
+
+480p
+
+360p
+
+240p
+
+144p
+
+──────── VIDEO (WEBM) ────────
+
+2160p
+
+1440p
+
+1080p
+
+720p
+
+480p
+
+360p
+
+──────── AUDIO ────────
+
+MP3 320 kbps
+
+MP3 256 kbps
+
+MP3 192 kbps
+
+MP3 128 kbps
+
+M4A
+
+AAC
+
+WEBM Audio
+
+Best Audio
+
+==================================================
+ORDER
+==================================================
+
+Always sort from highest quality to lowest quality.
+
+Example:
+
+MP4
+
+2160p
+
+1440p
+
+1080p
+
+720p
+
+480p
+
+360p
+
+240p
+
+144p
+
+Then
+
+WEBM
+
+Then
+
+Audio
+
+==================================================
+SHOW DETAILS
+==================================================
+
+Each dropdown option should display:
+
+Resolution
+
+Container (MP4, WEBM, MP3, etc.)
+
+Estimated File Size
+
+FPS (if available)
+
+Video Codec
+
+Audio Codec
+
+Whether audio is included
+
+Example:
+
+1080p • MP4 • 62 MB
+
+720p • MP4 • 34 MB
+
+480p • MP4 • 18 MB
+
+320 kbps • MP3 • 9 MB
+
+Best Audio • M4A • 6 MB
+
+==================================================
+AUDIO CONVERSION
+==================================================
+
+If the user selects MP3:
+
+Automatically extract audio using FFmpeg after yt-dlp downloads the media.
+
+Support:
+
+320 kbps
+
+256 kbps
+
+192 kbps
+
+128 kbps
+
+If FFmpeg is unavailable:
+
+Disable MP3 options and display a helpful message.
+
+==================================================
+SMART FILTERING
+==================================================
+
+Hide duplicate formats.
+
+Hide broken formats.
+
+Hide unsupported formats.
+
+Keep only downloadable formats.
+
+==================================================
+DEFAULT SELECTION
+==================================================
+
+Automatically select:
+
+1080p MP4
+
+If unavailable:
+
+720p MP4
+
+If unavailable:
+
+Best MP4
+
+==================================================
+UI
+==================================================
+
+Use a modern dropdown.
+
+Dark mode compatible.
+
+Light grey background for options.
+
+Hover animation.
+
+Scrollable if many formats exist.
+
+Rounded corners.
+
+Responsive.
+
+==================================================
+LOADING
+==================================================
+
+While formats are loading:
+
+Show skeleton loader.
+
+Disable Download button.
+
+After loading:
+
+Enable dropdown.
+
+==================================================
+DOWNLOAD BUTTON
+==================================================
+
+After selecting a format:
+
+Display
+
+Download MP4
+
+or
+
+Download MP3
+
+depending on the selected option.
+
+==================================================
+ERROR HANDLING
+==================================================
+
+If no formats are available:
+
+Display:
+
+"No downloadable formats were found."
+
+Never crash.
+
+==================================================
+PERFORMANCE
+==================================================
+
+Only request formats once per URL.
+
+Cache them until the URL changes.
+
+==================================================
+RESPONSIVE
+==================================================
+
+Desktop:
+
+Wide dropdown.
+
+Tablet:
+
+Responsive.
+
+Mobile:
+
+Full width.
+
+Easy touch targets.
+
+==================================================
+IMPORTANT
+==================================================
+
+Do not hardcode formats.
+
+Read available formats dynamically from yt-dlp.
+
+Always keep the dropdown synchronized with the backend response.
+
+Do not remove existing download functionality—only improve it with a categorized, dynamic dropdown.

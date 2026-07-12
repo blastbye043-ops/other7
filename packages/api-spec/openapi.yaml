@@ -1,0 +1,414 @@
+openapi: 3.1.0
+info:
+  title: Api
+  version: 0.1.0
+  description: YTDown API specification
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: video
+    description: Video info and download
+  - name: history
+    description: Download history
+  - name: formats
+    description: Supported formats
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /video/info:
+    post:
+      operationId: getVideoInfo
+      tags: [video]
+      summary: Get video info from URL
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VideoUrlInput"
+      responses:
+        "200":
+          description: Video info retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VideoInfo"
+        "400":
+          description: Invalid URL
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "422":
+          description: Unable to fetch video info
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /video/download:
+    post:
+      operationId: startDownload
+      tags: [video]
+      summary: Start a video download
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DownloadRequest"
+      responses:
+        "200":
+          description: Download started
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DownloadJob"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /video/download/{jobId}:
+    get:
+      operationId: getDownloadStatus
+      tags: [video]
+      summary: Get download job status
+      parameters:
+        - name: jobId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Download job status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DownloadJob"
+        "404":
+          description: Job not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /history:
+    get:
+      operationId: getHistory
+      tags: [history]
+      summary: Get download history
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+      responses:
+        "200":
+          description: Download history
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HistoryList"
+
+  /history/{id}:
+    delete:
+      operationId: deleteHistoryItem
+      tags: [history]
+      summary: Delete a history item
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted successfully
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /history/stats:
+    get:
+      operationId: getHistoryStats
+      tags: [history]
+      summary: Get download statistics summary
+      responses:
+        "200":
+          description: Stats summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HistoryStats"
+
+  /formats:
+    get:
+      operationId: getSupportedFormats
+      tags: [formats]
+      summary: Get supported output formats
+      responses:
+        "200":
+          description: List of supported formats
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SupportedFormat"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+
+    VideoUrlInput:
+      type: object
+      required:
+        - url
+      properties:
+        url:
+          type: string
+          description: YouTube video URL
+
+    VideoFormat:
+      type: object
+      required:
+        - formatId
+        - ext
+        - quality
+      properties:
+        formatId:
+          type: string
+        ext:
+          type: string
+        quality:
+          type: string
+        resolution:
+          type: ["string", "null"]
+        filesize:
+          type: ["integer", "null"]
+        vcodec:
+          type: ["string", "null"]
+        acodec:
+          type: ["string", "null"]
+        fps:
+          type: ["number", "null"]
+        tbr:
+          type: ["number", "null"]
+        container:
+          type: string
+          description: Logical container group for UI grouping (mp4, webm, audio)
+        hasAudio:
+          type: boolean
+        audioBitrate:
+          type: ["integer", "null"]
+          description: Target bitrate in kbps for synthetic MP3 conversion options
+
+    VideoInfo:
+      type: object
+      required:
+        - id
+        - title
+        - url
+        - formats
+        - duration
+        - thumbnail
+        - uploader
+        - viewCount
+        - uploadDate
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        url:
+          type: string
+        formats:
+          type: array
+          items:
+            $ref: "#/components/schemas/VideoFormat"
+        duration:
+          type: ["integer", "null"]
+        thumbnail:
+          type: string
+        uploader:
+          type: string
+        viewCount:
+          type: ["integer", "null"]
+        uploadDate:
+          type: ["string", "null"]
+        description:
+          type: ["string", "null"]
+        ffmpegAvailable:
+          type: boolean
+
+    DownloadRequest:
+      type: object
+      required:
+        - url
+        - formatId
+      properties:
+        url:
+          type: string
+        formatId:
+          type: string
+        audioOnly:
+          type: boolean
+        audioBitrate:
+          type: ["integer", "null"]
+          description: Target MP3 bitrate in kbps (320, 256, 192, or 128)
+
+    DownloadJob:
+      type: object
+      required:
+        - jobId
+        - status
+        - url
+        - formatId
+        - createdAt
+      properties:
+        jobId:
+          type: string
+        status:
+          type: string
+          enum: [pending, processing, done, failed]
+        url:
+          type: string
+        formatId:
+          type: string
+        progress:
+          type: ["number", "null"]
+        downloadUrl:
+          type: ["string", "null"]
+        filename:
+          type: ["string", "null"]
+        error:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    HistoryItem:
+      type: object
+      required:
+        - id
+        - url
+        - title
+        - format
+        - status
+        - createdAt
+      properties:
+        id:
+          type: integer
+        url:
+          type: string
+        title:
+          type: string
+        thumbnail:
+          type: ["string", "null"]
+        format:
+          type: string
+        filesize:
+          type: ["integer", "null"]
+        status:
+          type: string
+        createdAt:
+          type: string
+
+    HistoryList:
+      type: object
+      required:
+        - items
+        - total
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/HistoryItem"
+        total:
+          type: integer
+
+    HistoryStats:
+      type: object
+      required:
+        - totalDownloads
+        - successfulDownloads
+        - totalSizeBytes
+        - popularFormats
+      properties:
+        totalDownloads:
+          type: integer
+        successfulDownloads:
+          type: integer
+        totalSizeBytes:
+          type: integer
+        popularFormats:
+          type: array
+          items:
+            type: object
+            required: [format, count]
+            properties:
+              format:
+                type: string
+              count:
+                type: integer
+
+    SupportedFormat:
+      type: object
+      required:
+        - id
+        - label
+        - ext
+        - type
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        ext:
+          type: string
+        type:
+          type: string
+          enum: [video, audio]
+        description:
+          type: string

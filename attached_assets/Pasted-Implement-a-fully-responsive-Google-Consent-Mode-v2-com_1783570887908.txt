@@ -1,0 +1,242 @@
+Implement a fully responsive, Google Consent Mode v2 compatible cookie consent banner on the YTOUDown website without changing the existing UI, branding, or functionality.
+
+==================================================
+GOAL
+==================================================
+
+Create a modern GDPR/CCPA-friendly cookie consent system that is compatible with Google AdSense, Google Analytics, and future advertising services.
+
+The cookie banner should appear only for first-time visitors and remember the user's choice.
+
+==================================================
+CONSENT OPTIONS
+==================================================
+
+Provide three clearly labeled buttons:
+
+1. Accept All
+2. Reject Non-Essential
+3. Cookie Settings
+
+Do NOT use confusing wording.
+
+==================================================
+COOKIE CATEGORIES
+==================================================
+
+Create the following categories:
+
+Required Cookies
+- Always enabled
+- Cannot be disabled
+- Used for website functionality and security
+
+Analytics Cookies
+- Optional
+- Google Analytics
+- Performance monitoring
+
+Advertising Cookies
+- Optional
+- Google AdSense
+- Personalized advertising
+- Ad measurement
+- Conversion tracking
+
+Functional Cookies
+- Optional
+- User preferences
+- Language
+- Theme
+- Recently used settings
+
+==================================================
+COOKIE SETTINGS MODAL
+==================================================
+
+Clicking "Cookie Settings" should open a modal containing:
+
+Required Cookies
+(Always Active)
+
+Analytics Cookies
+Toggle On/Off
+
+Advertising Cookies
+Toggle On/Off
+
+Functional Cookies
+Toggle On/Off
+
+Buttons:
+
+Save Preferences
+
+Accept All
+
+Reject Non-Essential
+
+==================================================
+GOOGLE CONSENT MODE V2
+==================================================
+
+Implement Google Consent Mode v2.
+
+Update consent state according to the user's choice.
+
+Support:
+
+ad_storage
+
+ad_user_data
+
+ad_personalization
+
+analytics_storage
+
+functionality_storage
+
+security_storage
+
+personalization_storage
+
+Only grant consent after the user explicitly accepts the relevant categories.
+
+==================================================
+GOOGLE ADSENSE
+==================================================
+
+Ensure the implementation is compatible with Google AdSense.
+
+If the user accepts Advertising Cookies:
+
+- Allow Google AdSense to use advertising cookies according to the user's consent.
+- Support personalized ads when the user has granted advertising consent.
+
+If the user rejects Advertising Cookies:
+
+- Do not enable personalized advertising cookies.
+- Allow non-personalized ads if supported.
+
+Do not attempt to bypass user consent.
+
+==================================================
+LOCAL STORAGE
+==================================================
+
+Store the user's cookie preferences in localStorage or a first-party cookie.
+
+Do not ask again unless:
+
+- Preferences expire (e.g. after 6–12 months), or
+- The user clears browser data.
+
+==================================================
+COOKIE POLICY
+==================================================
+
+Create or update the Cookie Policy page explaining:
+
+- What cookies are
+- Which cookies are used
+- Why they are used
+- How users can change their preferences
+- How to contact us
+
+==================================================
+PRIVACY POLICY
+==================================================
+
+Update the Privacy Policy to explain:
+
+- Google AdSense may use cookies and similar technologies to display and measure ads, subject to the user's consent where required.
+- Google and its partners may use data as described in their own privacy policies.
+- Users can manage or withdraw consent at any time through the website's Cookie Settings.
+
+Do not claim that Google always collects data regardless of consent.
+
+==================================================
+FOOTER
+==================================================
+
+Add links in the footer to:
+
+Privacy Policy
+
+Cookie Policy
+
+Terms of Service
+
+DMCA Policy
+
+Contact
+
+==================================================
+RESPONSIVE
+==================================================
+
+Desktop:
+
+Banner fixed at bottom.
+
+Tablet:
+
+Full-width responsive banner.
+
+Mobile:
+
+Stack buttons vertically.
+
+Large tap targets.
+
+Accessible.
+
+==================================================
+ACCESSIBILITY
+==================================================
+
+Support:
+
+Keyboard navigation
+
+ARIA labels
+
+Screen readers
+
+Visible focus indicators
+
+==================================================
+DESIGN
+==================================================
+
+Match the existing YTOUDown theme.
+
+Modern appearance.
+
+Rounded corners.
+
+Subtle shadow.
+
+Smooth animations.
+
+Do not block the entire website.
+
+==================================================
+PERFORMANCE
+==================================================
+
+Load the cookie banner efficiently.
+
+Do not negatively affect Core Web Vitals.
+
+Lazy load non-essential scripts until consent is granted where applicable.
+
+==================================================
+IMPORTANT
+==================================================
+
+Follow GDPR, ePrivacy, and Google Consent Mode v2 best practices.
+
+Do not enable analytics or advertising cookies before the user has provided the required consent.
+
+Do not reduce website performance or change existing functionality.

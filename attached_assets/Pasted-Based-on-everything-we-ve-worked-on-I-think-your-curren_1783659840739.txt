@@ -1,0 +1,317 @@
+Based on everything we've worked on, I think your current backend is **waiting for `yt-dlp` to completely finish** before responding, and it likely has **no caching, no request cancellation, no timeout handling, and no retry logic**. That's why you sometimes get a long wait followed by **HTTP 500 Internal Server Error**.
+
+Instead of just increasing the timeout, the backend should be redesigned to return video information much faster.
+
+Here's a **production-ready prompt** for your AI:
+
+```text
+Perform a complete performance optimization and reliability audit of the YTOUDown video information fetching system without changing the UI, branding, SEO, AEO, GEO, responsiveness, or existing functionality.
+
+==================================================
+GOAL
+==================================================
+
+The "Get Video Info" operation should complete as quickly as possible.
+
+Target response time:
+
+Normal YouTube videos:
+1–3 seconds
+
+YouTube Shorts:
+Under 2 seconds
+
+Maximum acceptable response:
+5 seconds
+
+The application should rarely return HTTP 500 errors.
+
+==================================================
+BACKEND OPTIMIZATION
+==================================================
+
+Audit the entire video information pipeline.
+
+Identify every slow operation.
+
+Optimize:
+
+• yt-dlp execution
+• API response time
+• Network requests
+• JSON parsing
+• Thumbnail fetching
+• Metadata extraction
+• Format extraction
+
+Avoid unnecessary work before returning data.
+
+==================================================
+FAST METADATA FETCH
+==================================================
+
+When only video information is requested:
+
+Do NOT perform any download.
+
+Use yt-dlp only for metadata extraction.
+
+Avoid unnecessary processing.
+
+Return metadata immediately.
+
+==================================================
+TIMEOUT MANAGEMENT
+==================================================
+
+Implement intelligent timeout handling.
+
+If yt-dlp takes too long:
+
+Cancel the process.
+
+Retry once.
+
+If retry succeeds:
+
+Return data.
+
+If retry fails:
+
+Return a detailed JSON error.
+
+Never return a generic HTTP 500 without explanation.
+
+==================================================
+RETRY LOGIC
+==================================================
+
+Automatically retry temporary failures.
+
+Retry only once.
+
+Retry only for:
+
+Network timeout
+
+Temporary YouTube errors
+
+Connection reset
+
+DNS failures
+
+Do not retry invalid URLs.
+
+==================================================
+REQUEST CANCELLATION
+==================================================
+
+If the user pastes another URL before the previous request completes:
+
+Cancel the previous backend request.
+
+Cancel the yt-dlp process.
+
+Start processing only the newest URL.
+
+Prevent unnecessary CPU usage.
+
+==================================================
+CACHE
+==================================================
+
+Implement an in-memory cache.
+
+Cache video metadata.
+
+Cache key:
+
+Video ID
+
+Cache duration:
+
+10–15 minutes
+
+If another user requests the same video:
+
+Return cached metadata immediately.
+
+Do not call yt-dlp again until the cache expires.
+
+==================================================
+PARALLEL PROCESSING
+==================================================
+
+Run independent tasks concurrently where possible.
+
+For example:
+
+Fetch metadata
+
+Generate thumbnail URL
+
+Retrieve formats
+
+Avoid sequential blocking operations.
+
+==================================================
+FORMAT LOADING
+==================================================
+
+Return basic video information immediately:
+
+Title
+
+Thumbnail
+
+Duration
+
+Uploader
+
+Views
+
+Then load detailed download formats asynchronously if necessary.
+
+The user should not wait for every format before seeing the video preview.
+
+==================================================
+HTTP ERRORS
+==================================================
+
+Replace generic HTTP 500 responses with meaningful JSON.
+
+Examples:
+
+Invalid URL
+
+Video unavailable
+
+Private video
+
+Age restricted
+
+Region blocked
+
+Cookies required
+
+Network timeout
+
+yt-dlp unavailable
+
+FFmpeg unavailable
+
+Backend timeout
+
+==================================================
+LOGGING
+==================================================
+
+Measure execution time.
+
+Log:
+
+Request received
+
+yt-dlp start
+
+yt-dlp finish
+
+JSON parsing
+
+Cache hit
+
+Cache miss
+
+Response sent
+
+Log total execution time.
+
+==================================================
+FRONTEND
+==================================================
+
+Show a loading spinner.
+
+If loading exceeds 3 seconds:
+
+Display:
+
+"Still fetching video information..."
+
+Do not show an error immediately.
+
+If retry succeeds:
+
+Update automatically.
+
+==================================================
+PRELOAD
+==================================================
+
+As soon as the user pastes a valid URL:
+
+Automatically begin fetching metadata.
+
+No button press required.
+
+Debounce input by approximately 300–500 ms to avoid excessive API requests.
+
+==================================================
+PERFORMANCE
+==================================================
+
+Prevent duplicate API requests.
+
+Prevent duplicate yt-dlp executions.
+
+Prevent memory leaks.
+
+Use connection pooling if applicable.
+
+Reduce unnecessary object creation.
+
+==================================================
+FAILURE RECOVERY
+==================================================
+
+If fetching metadata fails:
+
+Provide a Retry button.
+
+Do not require page refresh.
+
+==================================================
+FINAL GOAL
+==================================================
+
+The website should feel instant.
+
+Most videos should display metadata within 1–3 seconds.
+
+HTTP 500 errors should be extremely rare.
+
+The backend should be robust, fault tolerant, cached, optimized, and production-ready.
+```
+
+## I also think I know the underlying cause
+
+From all the errors you've shared over the last few days, I don't think the main problem is the frontend. I think the backend architecture is causing the delays.
+
+Your backend appears to:
+
+* Launch a new `yt-dlp` process for every request.
+* Wait for the full output before responding.
+* Not cache metadata.
+* Return a generic 500 error instead of the actual cause.
+* Possibly perform database work before sending the response.
+
+Those design choices can make the site feel slow and fragile.
+
+If you want the performance of sites like **SaveFrom**, **YTDown**, or **SnapScooper**, the backend should be restructured around:
+
+* Fast metadata extraction (`yt-dlp --dump-single-json` or equivalent).
+* Short-lived metadata caching by video ID.
+* Non-blocking database operations (or none at all for metadata).
+* Immediate response with basic info, followed by loading formats if needed.
+
+That combination will give a much faster and more reliable user experience.

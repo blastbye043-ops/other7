@@ -1,0 +1,339 @@
+Perform a complete SEO, Accessibility, Performance, and Technical audit of the YTOUDown website and automatically fix every issue listed below without changing the existing UI, branding, colors, responsiveness, AEO, GEO, or download functionality.
+
+==================================================
+1. FIX BROKEN IMAGES
+==================================================
+
+A broken image has been detected.
+
+Requirements:
+
+• Find every image referenced in:
+  - img tags
+  - Open Graph metadata
+  - Twitter Card metadata
+  - JSON-LD
+  - Manifest
+  - favicon links
+
+• Verify each file actually exists.
+
+• Replace broken paths with valid local assets.
+
+• If an image does not exist:
+  - Automatically create a high-quality placeholder matching the site's branding.
+  - Use optimized WebP when appropriate.
+
+Specifically verify:
+
+/ui-preview.jpg
+
+/opengraph.jpg
+
+/twitter-card.jpg
+
+/logo.png
+
+/favicon.ico
+
+All preview images should load successfully.
+
+==================================================
+2. OPEN GRAPH & SOCIAL SHARING
+==================================================
+
+Verify the following metadata:
+
+og:title
+
+og:description
+
+og:image
+
+og:url
+
+og:type
+
+twitter:card
+
+twitter:title
+
+twitter:description
+
+twitter:image
+
+Requirements:
+
+Open Graph image:
+
+1200 × 630 pixels
+
+High quality
+
+Compressed
+
+Fast loading
+
+Ensure the image is publicly accessible and returns HTTP 200.
+
+==================================================
+3. META DESCRIPTION
+==================================================
+
+Rewrite the meta description to:
+
+• 145–155 characters
+• Natural language
+• Include the most important keywords at the beginning
+• Improve click-through rate
+• Avoid keyword stuffing
+
+Example keywords:
+
+YouTube Downloader
+
+Download YouTube Videos
+
+MP4
+
+MP3
+
+Shorts Downloader
+
+YTOUDown
+
+==================================================
+4. FORM ACCESSIBILITY
+==================================================
+
+Ensure the search form follows HTML best practices.
+
+Requirements:
+
+Wrap the input inside a proper <form>.
+
+The primary action button must be:
+
+type="submit"
+
+The Paste button must remain:
+
+type="button"
+
+Pressing Enter inside the input should automatically fetch video information.
+
+Keyboard users must not require clicking the button.
+
+==================================================
+5. ACCESSIBILITY
+==================================================
+
+Improve accessibility without changing appearance.
+
+Add:
+
+ARIA labels
+
+Accessible button names
+
+Accessible input names
+
+Visible keyboard focus
+
+Proper heading hierarchy
+
+Meaningful alt text
+
+Decorative images should use empty alt attributes.
+
+==================================================
+6. VIEWPORT
+==================================================
+
+Improve viewport accessibility.
+
+Use:
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+Do not restrict zooming.
+
+Allow users to zoom freely.
+
+==================================================
+7. DUPLICATE LINKS
+==================================================
+
+Audit the footer.
+
+Remove duplicate navigation links.
+
+Each navigation item should appear only once.
+
+Do not repeat:
+
+About
+
+FAQ
+
+Formats
+
+Privacy Policy
+
+Contact
+
+Terms
+
+Reduce unnecessary internal duplication while preserving important navigation.
+
+==================================================
+8. STRUCTURED DATA
+==================================================
+
+Keep existing JSON-LD.
+
+Validate every schema.
+
+Ensure there are no errors.
+
+Keep:
+
+Organization
+
+WebSite
+
+SoftwareApplication
+
+FAQPage
+
+HowTo
+
+BreadcrumbList
+
+SearchAction
+
+Speakable
+
+Verify every URL referenced in JSON-LD exists.
+
+==================================================
+9. SPEAKABLE CONTENT
+==================================================
+
+Keep Speakable schema.
+
+Improve spoken content.
+
+Make it concise.
+
+Natural.
+
+Easy for Google Assistant.
+
+No keyword stuffing.
+
+==================================================
+10. IMAGE OPTIMIZATION
+==================================================
+
+Compress every image.
+
+Use lazy loading where appropriate.
+
+Add:
+
+width
+
+height
+
+decoding="async"
+
+loading="lazy"
+
+Use eager loading only for the hero image.
+
+==================================================
+11. TECHNICAL SEO
+==================================================
+
+Verify:
+
+Canonical URLs
+
+robots.txt
+
+sitemap.xml
+
+Manifest
+
+Favicons
+
+Apple touch icon
+
+Theme color
+
+Meta robots
+
+Remove any noindex or nofollow directives from the production build.
+
+==================================================
+12. PERFORMANCE
+==================================================
+
+Improve Core Web Vitals.
+
+Reduce layout shifts.
+
+Reduce render-blocking resources.
+
+Optimize fonts.
+
+Preload the hero image.
+
+Lazy load below-the-fold images.
+
+==================================================
+13. VALIDATION
+==================================================
+
+Automatically verify:
+
+No broken internal links.
+
+No broken images.
+
+No duplicate IDs.
+
+No missing alt attributes.
+
+No console errors.
+
+No Lighthouse SEO warnings.
+
+No accessibility warnings.
+
+==================================================
+FINAL RESULT
+==================================================
+
+The website should pass:
+
+Google Lighthouse SEO: 100
+
+Accessibility: 100
+
+Best Practices: 100
+
+Performance: 95+
+
+Every image should load successfully.
+
+Every Open Graph image should work.
+
+Every keyboard action should function correctly.
+
+No broken links.
+
+No duplicate footer links.
+
+Fully production-ready for Google Search Console, Bing Webmaster Tools, and social media sharing.

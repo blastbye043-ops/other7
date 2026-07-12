@@ -1,0 +1,12 @@
+# Replit-specific tooling — not needed for Vercel builds
+.agents/
+.local/
+attached_assets/
+artifacts/mockup-sandbox/
+scripts/
+
+# Archives
+*.zip
+
+# Test / temp artifacts
+*.log
