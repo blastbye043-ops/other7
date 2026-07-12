@@ -1,5 +1,5 @@
 - [Monorepo restructure: Replit → standard layout](monorepo-restructure.md) — artifacts/ytdown→frontend, artifacts/api-server→backend, lib/*→packages/*; pnpm symlinks break on mv, always do clean reinstall after restructure.
-- [Replit Vite HMR fix](replit-vite-hmr-fix.md) — gate `hmr: { clientPort: 443 }` on `REPLIT_DOMAINS`; also run `pnpm install` on first import (node_modules absent).
+- [Replit Vite HMR fix](replit-vite-hmr-fix.md) — REMOVED from vite.config.ts; critters inlineCriticalCss plugin also removed (critters deprecated); vite.config.ts is now clean/portable.
 - [DB optional pattern](db-optional-pattern.md) — db/pool are nullable; fire-and-forget analytics with double try/catch; history routes return 503 when DB absent.
 - [yt-dlp on server IPs](ytdlp-server-ip-blocking.md) — YouTube blocks yt-dlp's default web client from datacenter IPs; force `player_client=android`.
 - [Split deploy: Vercel + Render](vercel-render-split-deploy.md) — static frontend on Vercel, Dockerized API on Render; why Docker is required and key gotchas.

@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "M-RfFesxAH3pJ4rY2TYQ3"
+uri = "file://DEPLOY.md"
+type = "text"
+title = "DEPLOY.md — Full Vercel + Render Deployment Guide"

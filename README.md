@@ -1,25 +1,37 @@
-# YTOUDown — YouTube Video Downloader
+# YTDown — YouTube Video Downloader
 
-A full-stack YouTube video downloader. Paste a URL, pick quality (up to 4K or MP3 audio), and download — no account needed.
+A production-ready, full-stack YouTube video downloader. Paste a URL, pick quality (up to 4K or MP3 audio), and download — no account needed.
 
 **Stack:** React 19 · Vite 7 · Express 5 · TypeScript 5.9 · PostgreSQL · Drizzle ORM · Tailwind CSS v4 · yt-dlp · FFmpeg
 
 ---
 
-## Project structure
+## Project Structure
 
 ```
-ytoudown/
-├── frontend/          # React + Vite web app
-├── backend/           # Express API server
+ytdown/
+├── frontend/          # React + Vite SPA
+│   └── src/
+│       ├── pages/     # Route pages (home, history, faq, about, …)
+│       ├── components/# UI components (shadcn/ui + layout)
+│       └── hooks/     # Custom React hooks
+├── backend/           # Express 5 API server
+│   └── src/
+│       ├── routes/    # video.ts, history.ts, formats.ts, healthz.ts
+│       ├── lib/       # logger, cleanup scheduler
+│       └── middlewares/
 ├── packages/
-│   ├── db/            # Drizzle ORM schema + database client
-│   ├── api-zod/       # Zod request/response schemas (generated from OpenAPI)
-│   ├── api-client/    # TanStack Query hooks for the API (generated)
+│   ├── db/            # Drizzle ORM schema + PostgreSQL client
+│   ├── api-zod/       # Shared Zod schemas (generated from OpenAPI)
+│   ├── api-client/    # TanStack Query hooks (generated)
 │   └── api-spec/      # OpenAPI spec + Orval codegen config
-├── .env.example       # ← copy this to .env and fill it in
-├── pnpm-workspace.yaml
-└── README.md          # ← you are here
+├── scripts/
+│   └── setup.sh       # Pre-flight dependency check
+├── .env.example       # Copy this to .env and fill in values
+├── vercel.json        # Frontend Vercel deployment config
+├── render.yaml        # Backend Render deployment blueprint
+├── backend/Dockerfile # Docker image for the API (includes yt-dlp + ffmpeg)
+└── DEPLOY.md          # Full deployment guide
 ```
 
 ---
@@ -28,160 +40,134 @@ ytoudown/
 
 | Tool | Version | Install |
 |------|---------|---------|
-| Node.js | 20 or 22 | https://nodejs.org |
-| pnpm | 9+ | `npm i -g pnpm` |
-| PostgreSQL | 14+ | https://postgresql.org |
-| yt-dlp | latest | `pip install yt-dlp` or https://github.com/yt-dlp/yt-dlp |
-| FFmpeg | any recent | `brew install ffmpeg` / `apt install ffmpeg` |
+| Node.js | 20+ | https://nodejs.org or `nvm install --lts` |
+| pnpm | 9+ | `npm i -g pnpm` or `corepack enable` |
+| yt-dlp | latest | `pip install yt-dlp` or `brew install yt-dlp` |
+| ffmpeg | any recent | `brew install ffmpeg` / `sudo apt install ffmpeg` |
+| PostgreSQL | 14+ | Optional — app works without a database |
+
+Run the pre-flight check to verify everything is installed:
+
+```bash
+pnpm setup
+```
 
 ---
 
-## Local setup
+## Local Development
 
-### 1 — Install dependencies
+### 1. Install Dependencies
 
 ```bash
 pnpm install
 ```
 
-### 2 — Configure environment
+### 2. Configure Environment
 
 ```bash
 cp .env.example .env
 ```
 
-Open `.env` and set **at minimum**:
+Open `.env` and set `DATABASE_URL` if you want download history. The downloader works without a database.
 
-```env
-DATABASE_URL=postgres://postgres:password@localhost:5432/ytoudown
-```
-
-See `.env.example` for all available variables with descriptions.
-
-### 3 — Create the database
-
-In psql (or your preferred Postgres client):
-
-```sql
-CREATE DATABASE ytoudown;
-```
-
-Then push the schema:
+### 3. (Optional) Push Database Schema
 
 ```bash
-# Run from the repo root
 pnpm --filter @workspace/db run push
 ```
 
-> This creates all tables. Re-run after any schema change in `packages/db/src/schema/`.
+### 4. Start Development Servers
 
-### 4 — Start development servers
-
-Open **two terminals**:
-
-**Terminal 1 — Backend API** (http://localhost:8080):
 ```bash
-pnpm --filter @workspace/api-server run dev
-# or from the root: pnpm dev:backend
+# Start both frontend + backend together
+pnpm dev
+
+# Or start separately in two terminals:
+pnpm dev:backend    # API server → http://localhost:8080
+pnpm dev:frontend   # Vite dev → http://localhost:3000
 ```
 
-**Terminal 2 — Frontend** (http://localhost:3000):
-```bash
-PORT=3000 pnpm --filter @workspace/ytdown run dev
-# or from the root: PORT=3000 pnpm dev:frontend
-```
-
-The frontend Vite dev server automatically proxies `/api/*` to `http://localhost:8080` (or `$BACKEND_PORT` if set). No need to set `VITE_API_URL` locally.
-
-> **yt-dlp / FFmpeg:** make sure both are on your PATH, or set `YT_DLP_PATH` and `FFMPEG_PATH` in `.env`.
+The Vite dev server proxies `/api/*` to `http://localhost:8080` automatically.
 
 ---
 
-## Available commands
+## Available Commands
 
 ```bash
-# Install all dependencies
-pnpm install
-
-# Start frontend dev server (port 3000)
-PORT=3000 pnpm --filter @workspace/ytdown run dev  # or: pnpm dev:frontend
-
-# Start backend dev server (port 8080)
-pnpm --filter @workspace/api-server run dev        # or: pnpm dev:backend
-
-# Type-check everything
-pnpm run typecheck
-
-# Build everything (typecheck + compile)
-pnpm run build
-
-# Push DB schema changes to your database
-pnpm --filter @workspace/db run push
-
-# Regenerate API client from OpenAPI spec
-pnpm --filter @workspace/api-spec run codegen
+pnpm dev               # Start both servers concurrently
+pnpm dev:frontend      # Vite dev server only (port 3000)
+pnpm dev:backend       # Express API only (port 8080)
+pnpm build             # Full typecheck + build all packages
+pnpm build:frontend    # Build frontend → frontend/dist/public/
+pnpm build:backend     # Bundle backend → backend/dist/index.mjs
+pnpm start             # Start built backend in production mode
+pnpm typecheck         # TypeScript check across all packages
+pnpm setup             # Pre-flight dependency check
 ```
 
 ---
 
-## Environment variables reference
+## Environment Variables
 
-### Backend (`backend/`)
+### Backend
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `DATABASE_URL` | ✅ | — | Postgres connection string |
-| `PORT` | no | `8080` | Port the API server listens on |
-| `CORS_ORIGINS` | prod ✅ | *(see note)* | Comma-separated allowed origins. **Unset = allow all in dev; reject all in production.** Always set this in production. |
-| `LOG_LEVEL` | no | `info` | Pino log level: `trace` / `debug` / `info` / `warn` / `error` |
-| `YT_DLP_PATH` | no | `yt-dlp` | Absolute path to yt-dlp binary if not on `$PATH` |
-| `FFMPEG_PATH` | no | `ffmpeg` | Absolute path to ffmpeg binary if not on `$PATH` |
-| `DOWNLOADS_DIR` | no | `backend/downloads/` | Temporary storage for processed video files |
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `DATABASE_URL` | — | Postgres connection string. Omit to disable history |
+| `PORT` | `8080` | API server port |
+| `CORS_ORIGINS` | open (dev) / closed (prod) | Comma-separated allowed origins |
+| `YT_DLP_PATH` | `yt-dlp` | Override yt-dlp binary path |
+| `FFMPEG_PATH` | `ffmpeg` | Override ffmpeg binary path |
+| `DOWNLOADS_DIR` | OS temp dir | Temporary download storage |
+| `LOG_LEVEL` | `info` | Pino log level |
 
-### Frontend (`frontend/`)
+### Frontend
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `PORT` | no | `3000` | Port the Vite dev server listens on |
-| `BACKEND_PORT` | no | `8080` | Port of local API server — used by Vite's `/api/*` dev proxy |
-| `BASE_PATH` | no | `/` | URL sub-path prefix (e.g. `/app` when deployed behind a reverse proxy) |
-| `VITE_SITE_URL` | prod only | `https://ytoudown.com` | Public frontend URL used for canonical URLs and SEO meta tags |
-| `VITE_API_URL` | prod only | *(same-origin)* | Public API server URL. Unset = use relative `/api/*` (proxied by Vite in dev, same-origin in prod) |
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `PORT` | `3000` | Vite dev server port |
+| `BACKEND_PORT` | `8080` | Local API port (used by Vite proxy) |
+| `VITE_API_URL` | same-origin | Production API URL (set when API and frontend are on different domains) |
+| `VITE_SITE_URL` | `https://ytoudown.com` | Public site URL for SEO / canonical tags |
+
+---
+
+## Production Build
+
+```bash
+pnpm build
+
+# Outputs:
+#   frontend/dist/public/    → static files (deploy to Vercel / CDN)
+#   backend/dist/index.mjs   → bundled API server
+
+# Start production backend (also serves frontend if VITE_API_URL is unset)
+NODE_ENV=production PORT=8080 pnpm start
+```
 
 ---
 
 ## Deployment
 
-### Frontend → Vercel
-
-1. Import the repo in Vercel
-2. Set **Build Command**: `pnpm --filter @workspace/ytdown run build`
-3. Set **Output Directory**: `frontend/dist/public`
-4. Set **Install Command**: `pnpm install`
-5. Add env var: `VITE_API_URL=https://your-api.onrender.com`
-
-### Backend → Render (Docker)
-
-1. Create a new **Web Service** from this repo
-2. Set **Docker file path**: `./backend/Dockerfile`
-3. Add env vars: `DATABASE_URL` (Render can auto-provision Postgres), `CORS_ORIGINS`
-
-See `render.yaml` for the full Render blueprint (auto-provisions Postgres).
+See **[DEPLOY.md](./DEPLOY.md)** for full step-by-step instructions (Vercel + Render).
 
 ---
 
-## Making schema changes
+## Architecture Notes
 
-1. Edit files in `packages/db/src/schema/`
-2. Run `pnpm --filter @workspace/db run push` to apply to your local database
-3. In production, run the push command against your production `DATABASE_URL`
+- yt-dlp is spawned via `child_process.spawn` — never runs client-side
+- Downloads are stored temporarily in `DOWNLOADS_DIR` and auto-cleaned after 1 hour
+- YouTube blocks the default `web` client from server IPs — the backend races multiple `player_client` combos in parallel and picks the richest format response
+- Database is optional — downloader works without it; history and analytics return 503 when DB is unconfigured
 
-## Regenerating the API client
+## API Endpoints
 
-If you change `packages/api-spec/openapi.yaml`:
-
-```bash
-pnpm --filter @workspace/api-spec run codegen
-```
-
-This regenerates `packages/api-zod/src/` and `packages/api-client/src/`.
+| Method | Path | Description |
+|--------|------|-------------|
+| `POST` | `/api/video/info` | Fetch video metadata + available formats |
+| `POST` | `/api/video/preview` | Quick thumbnail + title preview |
+| `POST` | `/api/video/download` | Start a download job |
+| `GET` | `/api/video/download/:jobId` | Poll job status / stream file |
+| `GET` | `/api/history` | Download history (requires DB) |
+| `GET` | `/api/formats` | List supported formats |
+| `GET` | `/api/healthz` | Health check |
