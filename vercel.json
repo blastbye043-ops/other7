@@ -1,5 +1,5 @@
 {
-  "buildCommand": "pnpm --filter @workspace/ytdown run build && cp -r frontend/dist _site",
+  "buildCommand": "cd frontend && pnpm run build && cd .. && cp -r frontend/dist _site",
   "outputDirectory": "_site",
   "installCommand": "pnpm install",
   "rewrites": [

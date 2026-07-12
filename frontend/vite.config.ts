@@ -34,9 +34,11 @@ export default defineConfig(({ command }) => {
     },
     root: path.resolve(import.meta.dirname),
     build: {
-      // Output to frontend/dist — stays inside the package directory so
-      // Vercel's build sandbox doesn't block the write (../traversal is blocked).
-      outDir: path.resolve(import.meta.dirname, "dist"),
+      // Use process.cwd() instead of import.meta.dirname — pnpm guarantees
+      // CWD is the package directory (frontend/) when running scripts, making
+      // this reliable across all environments including Vercel's build sandbox
+      // where import.meta.dirname can resolve incorrectly.
+      outDir: path.resolve(process.cwd(), "dist"),
       emptyOutDir: true,
       sourcemap: false,
       rollupOptions: {
