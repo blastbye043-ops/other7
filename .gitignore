@@ -5,6 +5,7 @@ dist
 public
 tmp
 out-tsc
+_site
 *.tsbuildinfo
 .expo
 .expo-shared
