@@ -105,21 +105,17 @@ app.use(
 );
 
 // ─── CORS ────────────────────────────────────────────────────────────────────
-// CORS_ORIGINS unset in production = reject all cross-origin browser requests.
-// In development = allow all origins for convenience.
+// CORS_ORIGINS: comma-separated list of allowed origins, e.g.
+//   CORS_ORIGINS=https://ytdown.vercel.app,https://yourdomain.com
+// Leave unset to allow ALL origins (fine for a public download tool; tighten
+// in production by setting the env var on your hosting platform).
 const rawCorsOrigins = process.env.CORS_ORIGINS;
-const isProduction = process.env.NODE_ENV === "production";
 
 let corsOrigin: cors.CorsOptions["origin"];
 if (rawCorsOrigins) {
   corsOrigin = rawCorsOrigins.split(",").map((s) => s.trim()).filter(Boolean);
-} else if (isProduction) {
-  logger.warn(
-    "CORS_ORIGINS is not set — rejecting all cross-origin browser requests until it is configured.",
-  );
-  corsOrigin = false;
 } else {
-  corsOrigin = true;
+  corsOrigin = true; // allow all origins when not explicitly restricted
 }
 
 app.use("/api", cors({ origin: corsOrigin }));
