@@ -34,11 +34,9 @@ export default defineConfig(({ command }) => {
     },
     root: path.resolve(import.meta.dirname),
     build: {
-      // Use process.cwd() instead of import.meta.dirname — pnpm guarantees
-      // CWD is the package directory (frontend/) when running scripts, making
-      // this reliable across all environments including Vercel's build sandbox
-      // where import.meta.dirname can resolve incorrectly.
-      outDir: path.resolve(process.cwd(), "dist"),
+      // Relative path — Vite resolves it against `root` (= this frontend/ dir).
+      // Keeps output at frontend/dist regardless of how the config is bundled.
+      outDir: "dist",
       emptyOutDir: true,
       sourcemap: false,
       rollupOptions: {

@@ -11,6 +11,6 @@ All Vercel commands (installCommand, buildCommand) run from `/vercel/path0/front
 
 **How to apply:**
 - `installCommand`: must `cd ..` first to reach the repo root for workspace installs: `cd .. && pnpm install`
-- `buildCommand`: runs directly from `frontend/` — no `cd` needed: `pnpm run build && cp -r dist _site`
-- `outputDirectory`: relative to `frontend/` — use simple names like `_site` or `dist`, never `frontend/dist`
-- `vite.config.ts` `outDir`: use `process.cwd()` not `import.meta.dirname` — Vite 7 bundles the config via esbuild into a temp location making `import.meta.dirname` unreliable; `process.cwd()` correctly returns the package directory when pnpm runs the script
+- `buildCommand`: runs directly from `frontend/` — no `cd` needed: `pnpm run build`
+- `outputDirectory`: `dist` — relative to `frontend/`; Vite writes there, Vercel finds it directly; no cp needed
+- `vite.config.ts` `outDir`: use plain `"dist"` (relative string, NOT path.resolve). Vite resolves relative outDir against `root`; `root` = `import.meta.dirname` = `frontend/` (works). Absolute paths via process.cwd() or import.meta.dirname are unreliable because Vite 7 bundles the config via esbuild into a temp location.
