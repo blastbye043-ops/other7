@@ -417,7 +417,7 @@ export default function Home() {
                 <Skeleton className="aspect-video w-full rounded-none" />
               )}
               <div className="p-4 space-y-3">
-                {preview ? (
+                {preview?.title ? (
                   <>
                     <h3 className="font-bold leading-tight break-words" title={preview.title}>
                       {preview.title}

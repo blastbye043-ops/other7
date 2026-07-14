@@ -674,6 +674,17 @@ router.post("/video/preview", infoLimiter, async (req, res) => {
     return;
   }
 
+  // Always respond 200 — the frontend skeleton needs this to show the loading
+  // state. Fallback thumbnail comes from YouTube's CDN (no auth required) so
+  // it works regardless of whether oEmbed is available from this server's IP.
+  const fallbackData = {
+    id: videoId,
+    title: "",
+    uploader: "",
+    // hqdefault is always present; maxresdefault sometimes 404s for older videos.
+    thumbnail: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
+  };
+
   try {
     const oembedUrl = `https://www.youtube.com/oembed?url=${encodeURIComponent(url)}&format=json`;
     const controller = new AbortController();
@@ -681,37 +692,33 @@ router.post("/video/preview", infoLimiter, async (req, res) => {
     const resp = await fetch(oembedUrl, { signal: controller.signal });
     clearTimeout(timeout);
 
-    if (!resp.ok) {
-      // Not fatal — the frontend falls back to showing the skeleton until
-      // /video/info resolves. 404 typically means the video is private,
-      // unlisted-without-embed, or the URL is malformed.
-      res.status(resp.status === 404 ? 404 : 502).json({ error: "Preview unavailable." });
+    if (resp.ok) {
+      const oembed = (await resp.json()) as {
+        title?: string;
+        author_name?: string;
+        thumbnail_url?: string;
+      };
+
+      const data = {
+        id: videoId,
+        title: oembed.title || "",
+        uploader: oembed.author_name || "",
+        // oEmbed's hqdefault is preferred; fall back to direct CDN URL.
+        thumbnail: oembed.thumbnail_url || fallbackData.thumbnail,
+      };
+
+      previewCache.set(cacheKey, { data, expiresAt: Date.now() + PREVIEW_CACHE_TTL_MS });
+      res.json(data);
       return;
     }
-
-    const oembed = (await resp.json()) as {
-      title?: string;
-      author_name?: string;
-      thumbnail_url?: string;
-    };
-
-    const data = {
-      id: videoId,
-      title: oembed.title || "Loading title…",
-      uploader: oembed.author_name || "",
-      // oEmbed's own thumbnail_url (hqdefault, always present) is used as
-      // the safe default. /video/info swaps this for the full-res thumbnail
-      // a couple seconds later — using maxresdefault here instead would
-      // sometimes 404 (not all videos have one) and flash a broken image.
-      thumbnail: oembed.thumbnail_url || "",
-    };
-
-    previewCache.set(cacheKey, { data, expiresAt: Date.now() + PREVIEW_CACHE_TTL_MS });
-    res.json(data);
+    // oEmbed returned non-OK — fall through to thumbnail-only fallback below.
+    req.log.warn({ status: resp.status, url }, "video/preview: oEmbed non-OK, using thumbnail fallback");
   } catch (err) {
-    req.log.warn({ err, url }, "video/preview: oEmbed lookup failed");
-    res.status(502).json({ error: "Preview unavailable." });
+    req.log.warn({ err, url }, "video/preview: oEmbed fetch failed, using thumbnail fallback");
   }
+
+  previewCache.set(cacheKey, { data: fallbackData, expiresAt: Date.now() + PREVIEW_CACHE_TTL_MS });
+  res.json(fallbackData);
 });
 
 router.post("/video/info", infoLimiter, async (req, res) => {
